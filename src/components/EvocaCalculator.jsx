@@ -1,169 +1,247 @@
 import React, { useState } from 'react';
 
-export default function EvocaCalculator() {
-  const [activeTab, setActiveTab] = useState('loan'); // 'loan' կամ 'deposit'
-  
-  // Վարկի վիճակը
-  const [loanAmount, setLoanAmount] = useState(1000000);
-  const [loanTerm, setLoanTerm] = useState(12); // ամիս
-  const [loanRate, setLoanRate] = useState(15); // %
-  const [repaymentType, setRepaymentType] = useState('annuity'); // 'annuity' կամ 'equal'
+const EvocaCalculator = () => {
+  const [activeTab, setActiveTab] = useState('loan');
+
+  const [amount, setAmount] = useState(0);
+  const [term, setTerm] = useState(1);
+  const [rate, setRate] = useState(1);
+  const [repaymentType, setRepaymentType] = useState('annuity');
 
   return (
-    <div className="min-h-screen bg-[#f4f7fc] flex items-center justify-center p-6 font-sans">
-      <div className="max-w-4xl w-full bg-white rounded-3xl shadow-xl p-8 md:p-12 relative overflow-hidden">
-        
+    <section className="w-full bg-[#fcfbfe] py-8 px-4 flex flex-col items-center select-none font-sans">
+      <div className="max-w-[850px] w-full">
         {/* Վերնագիր */}
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-8">
+        <h2 className="text-[28px] font-bold text-[#1d1d1f] mb-6 tracking-tight">
           Հաշվիչներ
         </h2>
 
-        {/* Ներդիրներ (Tabs): Վարկ / Ավանդ */}
-        <div className="flex border-b border-gray-200 mb-8">
-          <button
-            onClick={() => setActiveTab('loan')}
-            className={`pb-3 px-6 font-semibold text-lg transition-colors relative cursor-pointer ${
-              activeTab === 'loan' ? 'text-gray-900 border-b-2 border-purple-600' : 'text-gray-400 hover:text-gray-600'
-            }`}
-          >
-            Վարկ
-          </button>
-          <button
-            onClick={() => setActiveTab('deposit')}
-            className={`pb-3 px-6 font-semibold text-lg transition-colors relative cursor-pointer ${
-              activeTab === 'deposit' ? 'text-gray-900 border-b-2 border-purple-600' : 'text-gray-400 hover:text-gray-600'
-            }`}
-          >
-            Ավանդ
-          </button>
-        </div>
+        <div className="relative">
+          {/* Թաբեր */}
+          <div className="flex items-center gap-2 mb-[-1px] z-10 relative">
+            <button
+              onClick={() => setActiveTab('loan')}
+              className={`px-6 py-2.5 rounded-t-xl text-[15px] font-semibold transition-all duration-200 ${
+                activeTab === 'loan'
+                  ? 'bg-white text-[#1d1d1f] shadow-[0_-4px_12px_rgba(0,0,0,0.03)] border-t border-x border-[#f0edfa]'
+                  : 'bg-transparent text-[#7e7e82] hover:text-[#1d1d1f]'
+              }`}
+            >
+              Վարկ
+            </button>
+            <button
+              onClick={() => setActiveTab('deposit')}
+              className={`px-6 py-2.5 rounded-t-xl text-[15px] font-semibold transition-all duration-200 ${
+                activeTab === 'deposit'
+                  ? 'bg-white text-[#1d1d1f] shadow-[0_-4px_12px_rgba(0,0,0,0.03)] border-t border-x border-[#f0edfa]'
+                  : 'bg-transparent text-[#7e7e82] hover:text-[#1d1d1f]'
+              }`}
+            >
+              Ավանդ
+            </button>
+          </div>
 
-        {/* Հաշվիչի բովանդակություն */}
-        {activeTab === 'loan' ? (
-          <div className="space-y-6">
-            
-            {/* Վերին տող (Գումար և Ժամկետ) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Վարկի գումար */}
-              <div className="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm flex flex-col justify-between">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-500 font-medium">Վարկի գումար</span>
-                  <span className="text-xl font-bold text-gray-900">
-                    {loanAmount.toLocaleString()}
-                  </span>
-                </div>
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="50000000" 
-                  step="100000"
-                  value={loanAmount} 
-                  onChange={(e) => setLoanAmount(Number(e.target.value))}
-                  className="w-full accent-purple-600 cursor-pointer mb-1"
-                />
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>0</span>
-                  <span>50000000</span>
-                </div>
-              </div>
-
-              {/* Ժամկետ */}
-              <div className="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm flex flex-col justify-between">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-500 font-medium">Ժամկետ</span>
-                  <span className="text-xl font-bold text-gray-900">{loanTerm} ամիս</span>
-                </div>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="1200" 
-                  value={loanTerm} 
-                  onChange={(e) => setLoanTerm(Number(e.target.value))}
-                  className="w-full accent-purple-600 cursor-pointer mb-1"
-                />
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>1 ամիս</span>
-                  <span>1200 ամիս</span>
-                </div>
-              </div>
-
-            </div>
-
-            {/* Ստորին տող (Տոկոսադրույք և Մարման ձև) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-              
-              {/* Տարեկան տոկոսադրույք */}
-              <div className="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm flex flex-col justify-between">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-500 font-medium">Տարեկան տոկոսադրույք</span>
-                  <span className="text-xl font-bold text-gray-900">{loanRate} %</span>
-                </div>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="36" 
-                  value={loanRate} 
-                  onChange={(e) => setLoanRate(Number(e.target.value))}
-                  className="w-full accent-purple-600 cursor-pointer mb-1"
-                />
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>1 %</span>
-                  <span>36 %</span>
-                </div>
-              </div>
-
-              {/* Մարման ձև */}
-              <div className="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm flex flex-col justify-center">
-                <span className="text-xs text-gray-400 font-medium mb-3">Մարման ձև</span>
-                <div className="flex items-center gap-6">
+          {/* Հիմնական բլոկ */}
+          <div className="bg-white rounded-2xl rounded-tl-none p-6 md:p-8 shadow-[0_10px_30px_rgba(100,60,180,0.05)] border border-[#f0edfa]">
+            {activeTab === 'loan' ? (
+              <div className="space-y-6">
+                {/* Դաշտեր */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                   
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input 
-                      type="radio" 
-                      name="repayment" 
-                      checked={repaymentType === 'annuity'} 
-                      onChange={() => setRepaymentType('annuity')}
-                      className="w-5 h-5 accent-purple-600"
-                    />
-                    <span className="text-sm font-semibold text-gray-800">Հավասարաչափ</span>
-                  </label>
+                  {/* Վարկի գումար */}
+                  <div>
+                    <div className="relative border border-[#e8e6f0] rounded-xl p-3.5 flex justify-between items-center bg-white shadow-sm hover:border-[#6a00e5] transition-colors">
+                      <span className="text-[13px] text-[#1d1d1f] font-medium">
+                        Վարկի գումար
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="number"
+                          value={amount}
+                          onChange={(e) => setAmount(Number(e.target.value))}
+                          className="text-right text-[18px] font-bold text-[#1d1d1f] outline-none w-28 bg-transparent"
+                        />
+                      </div>
+                    </div>
+                    {/* Range Slider */}
+                    <div className="mt-2 relative px-1">
+                      <div className="relative flex items-center">
+                        <div
+                          className="absolute -top-1 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[5px] border-b-[#6a00e5] transition-all"
+                          style={{
+                            left: `${Math.min((amount / 50000000) * 100, 100)}%`,
+                            transform: 'translateX(-50%)',
+                          }}
+                        />
+                        <input
+                          type="range"
+                          min="0"
+                          max="50000000"
+                          value={amount}
+                          onChange={(e) => setAmount(Number(e.target.value))}
+                          className="w-full accent-[#6a00e5] h-1 bg-[#e8e6f0] rounded-lg appearance-none cursor-pointer mt-1"
+                        />
+                      </div>
+                      <div className="flex justify-between text-[11px] text-[#8e8e93] mt-1 font-medium">
+                        <span>0</span>
+                        <span>50000000</span>
+                      </div>
+                    </div>
+                  </div>
 
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input 
-                      type="radio" 
-                      name="repayment" 
-                      checked={repaymentType === 'equal'} 
-                      onChange={() => setRepaymentType('equal')}
-                      className="w-5 h-5 accent-purple-600"
-                    />
-                    <span className="text-sm font-semibold text-gray-800">Անուիտետ</span>
-                  </label>
+                  {/* Ժամկետ */}
+                  <div>
+                    <div className="relative border border-[#e8e6f0] rounded-xl p-3.5 flex justify-between items-center bg-white shadow-sm hover:border-[#6a00e5] transition-colors">
+                      <span className="text-[13px] text-[#1d1d1f] font-medium">
+                        Ժամկետ
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="number"
+                          value={term}
+                          onChange={(e) => setTerm(Number(e.target.value))}
+                          className="text-right text-[18px] font-bold text-[#1d1d1f] outline-none w-16 bg-transparent"
+                        />
+                        <span className="text-[16px] font-bold text-[#1d1d1f]">
+                          ամիս
+                        </span>
+                      </div>
+                    </div>
+                    {/* Range Slider */}
+                    <div className="mt-2 relative px-1">
+                      <div className="relative flex items-center">
+                        <div
+                          className="absolute -top-1 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[5px] border-b-[#6a00e5] transition-all"
+                          style={{
+                            left: `${Math.min(((term - 1) / (1200 - 1)) * 100, 100)}%`,
+                            transform: 'translateX(-50%)',
+                          }}
+                        />
+                        <input
+                          type="range"
+                          min="1"
+                          max="1200"
+                          value={term}
+                          onChange={(e) => setTerm(Number(e.target.value))}
+                          className="w-full accent-[#6a00e5] h-1 bg-[#e8e6f0] rounded-lg appearance-none cursor-pointer mt-1"
+                        />
+                      </div>
+                      <div className="flex justify-between text-[11px] text-[#8e8e93] mt-1 font-medium">
+                        <span>1 ամիս</span>
+                        <span>1200 ամիս</span>
+                      </div>
+                    </div>
+                  </div>
 
+                  {/* Տարեկան տոկոսադրույք */}
+                  <div>
+                    <div className="relative border border-[#e8e6f0] rounded-xl p-3.5 flex justify-between items-center bg-white shadow-sm hover:border-[#6a00e5] transition-colors">
+                      <span className="text-[13px] text-[#1d1d1f] font-medium">
+                        Տարեկան տոկոսադրույք
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="number"
+                          value={rate}
+                          onChange={(e) => setRate(Number(e.target.value))}
+                          className="text-right text-[18px] font-bold text-[#1d1d1f] outline-none w-12 bg-transparent"
+                        />
+                        <span className="text-[16px] font-bold text-[#1d1d1f]">
+                          %
+                        </span>
+                      </div>
+                    </div>
+                    {/* Range Slider */}
+                    <div className="mt-2 relative px-1">
+                      <div className="relative flex items-center">
+                        <div
+                          className="absolute -top-1 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[5px] border-b-[#6a00e5] transition-all"
+                          style={{
+                            left: `${Math.min(((rate - 1) / (36 - 1)) * 100, 100)}%`,
+                            transform: 'translateX(-50%)',
+                          }}
+                        />
+                        <input
+                          type="range"
+                          min="1"
+                          max="36"
+                          value={rate}
+                          onChange={(e) => setRate(Number(e.target.value))}
+                          className="w-full accent-[#6a00e5] h-1 bg-[#e8e6f0] rounded-lg appearance-none cursor-pointer mt-1"
+                        />
+                      </div>
+                      <div className="flex justify-between text-[11px] text-[#8e8e93] mt-1 font-medium">
+                        <span>1 %</span>
+                        <span>36 %</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Մարման ձև */}
+                  <div className="flex flex-col justify-center pt-1">
+                    <span className="text-[11px] text-[#8e8e93] font-medium mb-2.5">
+                      Մարման ձև
+                    </span>
+                    <div className="flex items-center gap-6">
+                      <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                        <div
+                          onClick={() => setRepaymentType('equal')}
+                          className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                            repaymentType === 'equal'
+                              ? 'border-[#6a00e5] bg-white'
+                              : 'border-[#d1d1d6]'
+                          }`}
+                        >
+                          {repaymentType === 'equal' && (
+                            <div className="w-2 h-2 rounded-full bg-[#6a00e5]" />
+                          )}
+                        </div>
+                        <span className="text-[14px] font-semibold text-[#1d1d1f]">
+                          Զսպանակաձև
+                        </span>
+                      </label>
+
+                      <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                        <div
+                          onClick={() => setRepaymentType('annuity')}
+                          className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                            repaymentType === 'annuity'
+                              ? 'border-[#6a00e5] bg-white'
+                              : 'border-[#d1d1d6]'
+                          }`}
+                        >
+                          {repaymentType === 'annuity' && (
+                            <div className="w-2 h-2 rounded-full bg-[#6a00e5]" />
+                          )}
+                        </div>
+                        <span className="text-[14px] font-semibold text-[#1d1d1f]">
+                          Անուիտետ
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ներքևի մաս */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-[#f8f7fc]">
+                  <p className="text-[12px] text-[#8e8e93] leading-relaxed max-w-[480px]">
+                    Բոլոր հաշվարկները կրում են մոտավոր բնույթ և չեն հանդիսանում հրապարակային առաջարկ:
+                  </p>
+                  <button className="w-full sm:w-auto px-8 py-3 bg-[#6a00e5] hover:bg-[#5800c2] text-white font-semibold rounded-full text-[15px] transition-colors shadow-md shadow-[#6a00e5]/20">
+                    Հաշվել
+                  </button>
                 </div>
               </div>
-
-            </div>
-
-            {/* Նախազգուշացում և Հաշվել կոճակ */}
-            <div className="flex flex-col md:flex-row items-center justify-between pt-4 gap-4 border-t border-gray-100">
-              <p className="text-xs text-gray-400 max-w-md">
-                Բոլոր հաշվարկները կրում են մոտավոր բնույթ և չեն հանդիսանում հրապարակային առաջարկ։[cite: 4]
-              </p>
-
-              <button className="bg-[#5b15bc] hover:bg-[#4a109d] text-white font-semibold py-3 px-12 rounded-2xl shadow-lg transition-all duration-200 active:scale-95 cursor-pointer">
-                Հաշվել
-              </button>
-            </div>
-
+            ) : (
+              <div className="py-10 text-center text-[#8e8e93] text-[15px]">
+                Ավանդի հաշվիչի բաժին
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="py-12 text-center text-gray-500">
-            Ավանդի հաշվիչի պարամետրերը (այստեղ կարող եք ավելացնել ավանդի տրամաբանությունը)
-          </div>
-        )}
-
+        </div>
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default EvocaCalculator;

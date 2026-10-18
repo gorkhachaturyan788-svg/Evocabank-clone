@@ -1,22 +1,34 @@
-import Header from "./components/Header";
-import Slider from "./components/Slider";
-import BiometricSection from "./components/BiometricSection";
-import EvocaSection from "./components/EvocaSection";
-import EvocaCardSlider from "./components/EvocaCardSlider";
-import EvocaCalculator from "./components/EvocaCalculator";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Home from './pages/Home';
 
-export default function App() {
+const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
-
-      <main className="w-full">
-        <Slider />
-        <BiometricSection />
-        <EvocaSection/>
-        <EvocaCardSlider/>
-        <EvocaCalculator/>
-      </main>
+      <div className="flex-grow">
+        {children}
+      </div>
     </div>
   );
+};
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+      </Routes>
+    </Router>
+  );
 }
+
+export default App;
