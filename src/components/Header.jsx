@@ -19,18 +19,18 @@ const DROPDOWNS = [
     id: "requests",
     label: "Առցանց հայտեր",
     items: [
-      { label: "Վարկի հայտ", href: "#" },
-      { label: "Քարտի հայտ", href: "#" },
-      { label: "Ավանդի հայտ", href: "#" },
+      { label: "Վարկի հայտ", href: "/online-application/loan" },
+      { label: "Քարտի հայտ", href: "/online-application/card" },
+      { label: "Ավանդի հայտ", href: "/online-application/deposit" },
     ],
   },
   {
     id: "contact",
     label: "Հետադարձ կապ",
     items: [
-      { label: "Զանգահարել", href: "#" },
-      { label: "Գրել մեզ", href: "#" },
-      { label: "Մասնաճյուղեր", href: "#" },
+      { label: "Զանգահարել", href: "tel:+37410510510" },
+      { label: "Գրել մեզ", href: "/contact-us" },
+      { label: "Մասնաճյուղեր", href: "/branches" },
     ],
   },
 ];
@@ -134,61 +134,221 @@ export default function Header({ onBurgerClick, onSearchClick }) {
     setActiveSubTab(0);
   }, [location.pathname]);
 
-  // Կոնֆիգուրացիա՝ ըստ էջերի
+  // Կոնֆիգուրացիա՝ ըստ էջերի (Լինկերով)
   const getMenuConfig = () => {
     switch (location.pathname) {
       case "/business":
         return {
           mainLinks: [
-            { label: "Վարկեր", subItems: ["Բիզնես վարկեր"] },
-            { label: "Լիզինգ", subItems: ["Evoca Leasing", "Հատուկ առաջարկ"] },
-            { label: "Հաշիվներ", subItems: ["Հաշիվների բացում և սպասարկում", "Առարկայազուրկ մետաղական հաշիվներ"] },
-            { label: "Ավանդներ", subItems: ["Դասական ավանդ"] },
-            { label: "Արժեթղթերի շուկա", subItems: ["Ներդրումային ծառայություններ", "Պարտատոմսեր", "ՀԿԴ ծառայություններ", "Ռեպո/Հակադարձ ռեպո գործարքներ", "EvocaINVEST"] },
-            { label: "Առևտրի ֆինանսավորում", subItems: ["Երաշխիք", "Ֆակտորինգային ֆինանսավորում", "Ակրեդիտիվ", "Ինկասո"] },
-            { label: "Դիջիթալ", subItems: ["V-POS Տերմինալ", "POS Տերմինալ", "Սակագներ", "Տերմինալի տեղադրման հայտ", "Evoca Mobile POS` mPOS"] },
-            { label: "Այլ", subItems: ["Պահատուփեր", "Փոխանցումներ"] },
+            { 
+              label: "Վարկեր", 
+              path: "/business/loans",
+              subItems: [{ label: "Բիզնես վարկեր", path: "/business/loans/business-loans" }] 
+            },
+            { 
+              label: "Լիզինգ", 
+              path: "/business/leasing",
+              subItems: [
+                { label: "Evoca Leasing", path: "/business/leasing/evoca-leasing" },
+                { label: "Հատուկ առաջարկ", path: "/business/leasing/special-offer" }
+              ] 
+            },
+            { 
+              label: "Հաշիվներ", 
+              path: "/business/accounts",
+              subItems: [
+                { label: "Հաշիվների բացում և սպասարկում", path: "/business/accounts/opening" },
+                { label: "Առարկայազուրկ մետաղական հաշիվներ", path: "/business/accounts/metal" }
+              ] 
+            },
+            { 
+              label: "Ավանդներ", 
+              path: "/business/deposits",
+              subItems: [{ label: "Դասական ավանդ", path: "/business/deposits/classic" }] 
+            },
+            { 
+              label: "Արժեթղթերի շուկա", 
+              path: "/business/securities",
+              subItems: [
+                { label: "Ներդրումային ծառայություններ", path: "/business/securities/investment" },
+                { label: "Պարտատոմսեր", path: "/business/securities/bonds" },
+                { label: "ՀԿԴ ծառայություններ", path: "/business/securities/hkd" },
+                { label: "Ռեպո/Հակադարձ ռեպո գործարքներ", path: "/business/securities/repo" },
+                { label: "EvocaINVEST", path: "/business/securities/evocainvest" }
+              ] 
+            },
+            { 
+              label: "Առևտրի ֆինանսավորում", 
+              path: "/business/trade-finance",
+              subItems: [
+                { label: "Երաշխիք", path: "/business/trade-finance/guarantee" },
+                { label: "Ֆակտորինգային ֆինանսավորում", path: "/business/trade-finance/factoring" },
+                { label: "Ակրեդիտիվ", path: "/business/trade-finance/letter-of-credit" },
+                { label: "Ինկասո", path: "/business/trade-finance/collection" }
+              ] 
+            },
+            { 
+              label: "Դիջիթալ", 
+              path: "/business/digital",
+              subItems: [
+                { label: "V-POS Տերմինալ", path: "/business/digital/vpos" },
+                { label: "POS Տերմինալ", path: "/business/digital/pos" },
+                { label: "Սակագներ", path: "/business/digital/tariffs" },
+                { label: "Տերմինալի տեղադրման հայտ", path: "/business/digital/request" },
+                { label: "Evoca Mobile POS` mPOS", path: "/business/digital/mpos" }
+              ] 
+            },
+            { 
+              label: "Այլ", 
+              path: "/business/other",
+              subItems: [
+                { label: "Պահատուփեր", path: "/business/other/safe-boxes" },
+                { label: "Փոխանցումներ", path: "/business/other/transfers" }
+              ] 
+            },
           ],
         };
+
       case "/about":
         return {
           mainLinks: [
             { 
               label: "Evoca-ի մասին", 
+              path: "/about/general",
               subItems: [
-                "Ընդհանուր", 
-                "Կառուցվածք", 
-                "Բաժնետերեր", 
-                "Ղեկավարություն", 
-                "Գործընկերներ", 
-                "Մրցանակներ", 
-                "CSR", 
-                "Էվոկա Ֆինանսական խումբ"
+                { label: "Ընդհանուր", path: "/about/general" },
+                { label: "Կառուցվածք", path: "/about/structure" },
+                { label: "Բաժնետերեր", path: "/about/shareholders" },
+                { label: "Ղեկավարություն", path: "/about/management" },
+                { label: "Գործընկերներ", path: "/about/partners" },
+                { label: "Մրցանակներ", path: "/about/awards" },
+                { label: "CSR", path: "/about/csr" },
+                { label: "Էվոկա Ֆինանսական խումբ", path: "/about/financial-group" }
               ] 
             },
-            { label: "Սակագներ", subItems: ["Սակագներ"] },
-            { label: "Հաշվետվություններ", subItems: ["Ֆինանսական հաշվետվություններ"] },
-            { label: "Հայտարարություններ", subItems: ["Հայտարարություններ"] },
+            { 
+              label: "Սակագներ", 
+              path: "/about/tariffs",
+              subItems: [
+                { label: "Վարկեր ֆիզիկական անձանց", path: "/about/tariffs/individual-loans" },
+                { label: "Վարկեր իրավաբանական անձանց", path: "/about/tariffs/business-loans" },
+                { label: "Միջնորդավճարների սակագները", path: "/about/tariffs/commissions" },
+                { label: "Ավանդների սակագներ", path: "/about/tariffs/deposits" },
+                { label: "Արխիվ", path: "/about/tariffs/archive" }
+              ] 
+            },
+            { 
+              label: "Հաշվետվություններ", 
+              path: "/about/reports",
+              subItems: [
+                { label: "Աուդիտորական եզրակացություն", path: "/about/reports/audit" },
+                { label: "Ֆինանսական հաշվետվություններ", path: "/about/reports/financial" },
+                { label: "Ներդրողների համար", path: "/about/reports/investors" },
+                { label: "Կիսամյակային հաշվետվություն", path: "/about/reports/semi-annual" },
+                { label: "Տարեկան հաշվետվություն", path: "/about/reports/annual" }
+              ] 
+            },
+            { 
+              label: "Հայտարարություններ", 
+              path: "/about/announcements",
+              subItems: [] 
+            },
           ],
         };
+
+      case "/career":
+        return {
+          mainLinks: [
+            { 
+              label: "Evoca Լայֆ", 
+              path: "/career/life",
+              subItems: [
+                { label: "Մշակույթ", path: "/career/life/culture" },
+                { label: "Առավելություններ", path: "/career/life/benefits" },
+                { label: "Հաճախ տրվող հարցեր", path: "/career/life/faq" },
+                { label: "Ինչպես ընդունվել աշխատանքի Evocabank-ում", path: "/career/life/how-to-apply" }
+              ] 
+            },
+            { 
+              label: "Աշխատանք և պրակտիկա", 
+              path: "/career/jobs",
+              subItems: [
+                { label: "Աշխատանք Evoca-ում", path: "/career/jobs/vacancies" },
+                { label: "Ուսումնական պրակտիկա", path: "/career/jobs/internship" },
+                { label: "EvocaBRIDGE", path: "/career/jobs/bridge" }
+              ] 
+            },
+          ],
+        };
+
       case "/news":
       case "/blog":
-      case "/career":
       case "/instant-payments":
         return {
           mainLinks: [],
         };
+
       default: // Home (Անհատներ)
         return {
           mainLinks: [
-            { label: "Վարկեր", subItems: ["Վարկեր", "Վարկային պատմություն և սքոր", "Կարևոր տեղեկատվություն"] },
-            { label: "Քարտեր", subItems: ["Քարտեր", "Քարտերի տրամադրում և սպասարկում", "Սոցիալական ապահովության վճարային քարտեր", "Evoca Benefits"] },
-            { label: "Ավանդներ", subItems: ["Ավանդներ", "Կարևոր տեղեկատվություն"] },
-            { label: "Հաշիվներ", subItems: ["Evoca խնայողական հաշիվ", "Հաշիվների բացում և սպասարկում", "Առարկայազուրկ մետաղական հաշիվներ", "Ոչ ռեզիդենտ հաճախորդների հեռավար սպասարկում"] },
-            { label: "Փոխանցումներ", subItems: ["Դրամական փոխանցումներ", "Վճարային համակարգեր"] },
-            { label: "Արժեթղթեր", subItems: ["Ներդրումային ծառայություններ", "Պարտատոմսեր", "ՀԿԴ ծառայություններ", "Ռեպո/Հակադարձ Ռեպո գործարքներ", "EvocaINVEST"] },
-            { label: "EvocaSALARY", subItems: [] },
-            { label: "EvocaTOUCH", subItems: [] },
+            { 
+              label: "Վարկեր", 
+              path: "/loans",
+              subItems: [
+                { label: "Վարկեր", path: "/loans/all" },
+                { label: "Վարկային պատմություն և սքոր", path: "/loans/history-score" },
+                { label: "Կարևոր տեղեկատվություն", path: "/loans/important-info" }
+              ] 
+            },
+            { 
+              label: "Քարտեր", 
+              path: "/cards",
+              subItems: [
+                { label: "Քարտեր", path: "/cards/all" },
+                { label: "Քարտերի տրամադրում և սպասարկում", path: "/cards/service" },
+                { label: "Սոցիալական ապահովության վճարային քարտեր", path: "/cards/social" },
+                { label: "Evoca Benefits", path: "/cards/benefits" }
+              ] 
+            },
+            { 
+              label: "Ավանդներ", 
+              path: "/deposits",
+              subItems: [
+                { label: "Ավանդներ", path: "/deposits/all" },
+                { label: "Կարևոր տեղեկատվություն", path: "/deposits/info" }
+              ] 
+            },
+            { 
+              label: "Հաշիվներ", 
+              path: "/accounts",
+              subItems: [
+                { label: "Evoca խնայողական հաշիվ", path: "/accounts/savings" },
+                { label: "Հաշիվների բացում և սպասարկում", path: "/accounts/service" },
+                { label: "Առարկայազուրկ մետաղական հաշիվներ", path: "/accounts/metal" },
+                { label: "Ոչ ռեզիդենտ հաճախորդների հեռավար սպասարկում", path: "/accounts/non-resident" }
+              ] 
+            },
+            { 
+              label: "Փոխանցումներ", 
+              path: "/transfers",
+              subItems: [
+                { label: "Դրամական փոխանցումներ", path: "/transfers/money" },
+                { label: "Վճարային համակարգեր", path: "/transfers/systems" }
+              ] 
+            },
+            { 
+              label: "Արժեթղթեր", 
+              path: "/securities",
+              subItems: [
+                { label: "Ներդրումային ծառայություններ", path: "/securities/investment" },
+                { label: "Պարտատոմսեր", path: "/securities/bonds" },
+                { label: "ՀԿԴ ծառայություններ", path: "/securities/hkd" },
+                { label: "Ռեպո/Հակադարձ Ռեպո գործարքներ", path: "/securities/repo" },
+                { label: "EvocaINVEST", path: "/securities/evocainvest" }
+              ] 
+            },
+            { label: "EvocaSALARY", path: "/evoca-salary", subItems: [] },
+            { label: "EvocaTOUCH", path: "/evoca-touch", subItems: [] },
           ],
         };
     }
@@ -242,9 +402,9 @@ export default function Header({ onBurgerClick, onSearchClick }) {
                     <ul className="absolute -left-4 top-[calc(100%+18px)] z-50 min-w-[220px] rounded-[10px] border border-[#e6e6e6] bg-white py-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
                       {d.items.map((it) => (
                         <li key={it.label}>
-                          <a href={it.href} className="block px-[18px] py-2.5 text-[15px] font-medium hover:bg-[#f4ecfb] hover:text-[#6a00d1]">
+                          <Link to={it.href} className="block px-[18px] py-2.5 text-[15px] font-medium hover:bg-[#f4ecfb] hover:text-[#6a00d1]">
                             {it.label}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -254,9 +414,9 @@ export default function Header({ onBurgerClick, onSearchClick }) {
             })}
 
             <div className="flex items-center gap-[14px] sm:gap-[19px]">
-              <a href="#" aria-label="Մասնաճյուղեր" className={iconBtn}><PinIcon /></a>
-              <a href="#" aria-label="Հաճախ տրվող հարցեր" className={iconBtn}><FaqIcon /></a>
-              <a href="#" aria-label="Լեզու" className={iconBtn}><GlobeIcon /></a>
+              <Link to="/branches" aria-label="Մասնաճյուղեր" className={iconBtn}><PinIcon /></Link>
+              <Link to="/faq" aria-label="Հաճախ տրվող հարցեր" className={iconBtn}><FaqIcon /></Link>
+              <button type="button" aria-label="Լեզու" className={iconBtn}><GlobeIcon /></button>
               <button type="button" aria-label="Որոնում" onClick={onSearchClick} className={iconBtn}><SearchIcon /></button>
               <button type="button" aria-label="Մենյու" onClick={onBurgerClick} className={`${iconBtn} ml-[7px]`}><BurgerIcon /></button>
             </div>
@@ -291,7 +451,9 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           </div>
 
           <a
-            href="#"
+            href="https://evocaonline.am"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-3xl bg-[#6a00d1] px-5 font-['Noto_Sans',Arial,sans-serif] text-[15px] font-bold text-white transition-colors hover:bg-[#5500a8] sm:h-[45px] sm:px-8 sm:text-[17px]"
           >
             EvocaONLINE
@@ -302,17 +464,17 @@ export default function Header({ onBurgerClick, onSearchClick }) {
         {activeMainItem && activeMainItem.subItems && activeMainItem.subItems.length > 0 && (
           <div className="w-full bg-[#6a00d1] text-white py-3.5 px-6 xl:px-[62px] flex items-center gap-8 shadow-inner overflow-x-auto no-scrollbar">
             {activeMainItem.subItems.map((sub, sIdx) => (
-              <a
+              <Link
                 key={sIdx}
-                href="#"
+                to={sub.path}
                 className={`text-[15px] whitespace-nowrap transition-all ${
                   sIdx === 0 
                     ? "font-bold text-white bg-[#4c0099] px-3 py-1 rounded-md" 
                     : "font-semibold text-white/90 hover:text-white"
                 }`}
               >
-                {sub}
-              </a>
+                {sub.label}
+              </Link>
             ))}
           </div>
         )}

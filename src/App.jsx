@@ -1,8 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import Loans from './components/Loans';
+import CreditHistoryScore from './components/CreditHistoryScore'; // Ներմուծում ենք վարկային պատմության բաղադրիչը
 
 function App() {
   return (
@@ -14,6 +16,20 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
+            
+            {/* Վարկերի էջեր */}
+            <Route path="/loans" element={<Loans />} />
+            <Route path="/loans/history-score" element={<CreditHistoryScore />} />
+            <Route path="/loans/*" element={<Loans />} />
+
+            {/* Ապագա էջերի համար placeholder-ներ կամ վերահասցեավորում */}
+            <Route path="/business" element={<Home />} />
+            <Route path="/instant-payments" element={<Home />} />
+            <Route path="/about/*" element={<Home />} />
+            <Route path="/career/*" element={<Home />} />
+
+            {/* Չգտնված էջերը ուղղորդում են գլխավոր էջ */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
 
