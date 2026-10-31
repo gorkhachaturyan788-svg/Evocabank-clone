@@ -6,11 +6,13 @@ import Home from './pages/Home';
 import Loans from './components/Loans';
 import CreditHistoryScore from './components/CreditHistoryScore';
 import ImportantInfo from './components/ImportantInfo';
-import AllCards from './components/AllCards'; // Քարտերի բաղադրիչը
-import CardService from './components/CardService'; // Քարտերի տրամադրում և սպասարկում
-import SocialCards from './components/SocialCards'; // Սոցիալական ապահովության վճարային քարտեր
+import AllCards from './components/AllCards'; 
+import CardService from './components/CardService'; 
+import SocialCards from './components/SocialCards'; 
+import EvocaBenefits from './components/EvocaBenefits';
+import DepositsList from './components/DepositsList'; // <--- Ավանդներ էջ
+import DepositsInfo from './components/DepositsInfo'; // <--- Ավանդներ / Կարևոր տեղեկատվություն
 
-// Ներքին բաղադրիչ՝ ցուցադրելու կամ թաքցնելու Header-ն ու Footer-ը ըստ URL-ի
 function Layout() {
   const location = useLocation();
   const isBenefitsPage = location.pathname === '/cards/benefits';
@@ -22,23 +24,22 @@ function Layout() {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          
-          {/* Վարկերի էջեր */}
           <Route path="/loans" element={<Loans />} />
           <Route path="/loans/all" element={<Loans />} />
           <Route path="/loans/history-score" element={<CreditHistoryScore />} />
           <Route path="/loans/important-info" element={<ImportantInfo />} />
-
-          {/* Քարտերի էջեր */}
           <Route path="/cards" element={<AllCards />} />
           <Route path="/cards/all" element={<AllCards />} />
           <Route path="/cards/service" element={<CardService />} />
           <Route path="/cards/social" element={<SocialCards />} />
           
-          {/* Evoca Benefits էջ, որտեղ Header և Footer չկան */}
-          <Route path="/cards/benefits" element={<div className="p-10 text-center text-2xl font-bold"></div>} />
+          {/* Evoca Benefits էջ */}
+          <Route path="/cards/benefits" element={<EvocaBenefits />} />
 
-          {/* Այլ էջեր կամ սխալ հասցեներ */}
+          {/* Ավանդներ էջ */}
+          <Route path="/deposits" element={<DepositsList />} />
+          <Route path="/deposits/all" element={<DepositsList />} />
+          <Route path="/deposits/info" element={<DepositsInfo />} />
         </Routes>
       </main>
 
