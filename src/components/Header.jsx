@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useCartStore } from "../useCartStore"; // <-- Ճանապարհը համապատասխանեցված է src-ում գտնվող useCartStore.js-ին
 
 const DESIGN_WIDTH = 1907;
 const MIN_DESKTOP = 1280;
@@ -65,6 +66,15 @@ const FaqIcon = () => (
   </svg>
 );
 
+/* Զամբյուղի պատկերակ */
+const CartIcon = () => (
+  <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="9" cy="21" r="1" />
+    <circle cx="20" cy="21" r="1" />
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+  </svg>
+);
+
 const GlobeIcon = () => (
   <svg className="h-[17px] w-[17px]" viewBox="2.5 2.5 19 19" aria-hidden="true">
     <circle cx="12" cy="12" r="9.5" fill="currentColor" />
@@ -110,6 +120,9 @@ export default function Header({ onBurgerClick, onSearchClick }) {
   const rightRef = useRef(null);
   const location = useLocation();
 
+  // Վերցնում ենք զամբյուղի ապրանքները Zustand-ից
+  const cartItems = useCartStore((state) => state.cartItems);
+
   useEffect(() => {
     const update = () => {
       const w = document.documentElement.clientWidth;
@@ -130,7 +143,6 @@ export default function Header({ onBurgerClick, onSearchClick }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Կոնֆիգուրացիա՝ ըստ էջերի (Լինկերով)
   const getMenuConfig = () => {
     if (location.pathname.startsWith("/business")) {
       return {
@@ -285,7 +297,6 @@ export default function Header({ onBurgerClick, onSearchClick }) {
       };
     }
 
-    // Default: Home / Անհատներ (ներառյալ /loans և այլն)
     return {
       mainLinks: [
         { 
@@ -352,7 +363,6 @@ export default function Header({ onBurgerClick, onSearchClick }) {
 
   const currentConfig = getMenuConfig();
 
-  // Ավտոմատ գտնում և ընտրում է ճիշտ հիմնական մենյուի կետը ըստ URL-ի (օրինակ՝ /loans/important-info-ի դեպքում ընտրում է «Վարկեր»-ը)
   useEffect(() => {
     if (currentConfig.mainLinks.length > 0) {
       const matchedIndex = currentConfig.mainLinks.findIndex((link) =>
@@ -425,6 +435,17 @@ export default function Header({ onBurgerClick, onSearchClick }) {
 
             <div className="flex items-center gap-[14px] sm:gap-[19px]">
               <Link to="/branches" aria-label="Մասնաճյուղեր" className={iconBtn}><PinIcon /></Link>
+              
+              {/* --- Զամբյուղի հղումը Քարտեզի (PinIcon) և Հարցականի (FaqIcon) կողքին --- */}
+              <Link to="/cart" aria-label="Զամբյուղ" className={`${iconBtn} relative`}>
+                <CartIcon />
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                    {cartItems.length}
+                  </span>
+                )}
+              </Link>
+
               <Link to="/faq" aria-label="Հաճախ տրվող հարցեր" className={iconBtn}><FaqIcon /></Link>
               <button type="button" aria-label="Լեզու" className={iconBtn}><GlobeIcon /></button>
               <button type="button" aria-label="Որոնում" onClick={onSearchClick} className={iconBtn}><SearchIcon /></button>
@@ -470,7 +491,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           </a>
         </div>
 
-        {/* ---------- 3. Sub-bar (Մանուշակագույն ենթատողը) ---------- */}
+        {/* ---------- 3. Sub-bar ---------- */}
         {activeMainItem && activeMainItem.subItems && activeMainItem.subItems.length > 0 && (
           <div className="w-full bg-[#6a00d1] text-white py-3.5 px-6 xl:px-[62px] flex items-center gap-8 shadow-inner overflow-x-auto no-scrollbar">
             {activeMainItem.subItems.map((sub, sIdx) => {

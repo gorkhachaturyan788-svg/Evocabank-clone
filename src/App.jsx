@@ -16,7 +16,9 @@ import EvocaSavingsAccount from './components/EvocaSavingsAccount'; // Հաշի�
 import AccountService from './components/AccountService'; // Հաշիվներ / Հաշիվների բացում և սպասարկում
 import MetalAccounts from './components/MetalAccounts'; // Հաշիվներ / Առարկայազուրկ մետաղական հաշիվներ
 import NonResidentService from './components/NonResidentService'; // Հաշիվներ / Ոչ ռեզիդենտ հաճախորդների սպասարկում
-import MoneyTransfers from './components/MoneyTransfers'; // <--- Փոխանցումներ / Դրամական փոխանցումներ
+import MoneyTransfers from './components/MoneyTransfers'; // Փոխանցումներ / Դրամական փոխանցումներ
+import PaymentSystems from './components/PaymentSystems'; // Փոխանցումներ / Վճարային համակարգեր
+import Cart from './pages/Cart'; // Զամբյուղի էջ
 
 function Layout() {
   const location = useLocation();
@@ -54,7 +56,12 @@ function Layout() {
           <Route path="/accounts/non-resident" element={<NonResidentService />} />
 
           {/* Փոխանցումներ էջեր */}
-          <Route path="/transfers/money" element={<MoneyTransfers />} /> {/* <--- Նոր էջի ճանապարհը */}
+          <Route path="/transfers" element={<MoneyTransfers />} />
+          <Route path="/transfers/money" element={<MoneyTransfers />} />
+          <Route path="/transfers/systems" element={<PaymentSystems />} />
+
+          {/* Զամբյուղի էջ */}
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </main>
 
