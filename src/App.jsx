@@ -10,8 +10,11 @@ import AllCards from './components/AllCards';
 import CardService from './components/CardService'; 
 import SocialCards from './components/SocialCards'; 
 import EvocaBenefits from './components/EvocaBenefits';
-import DepositsList from './components/DepositsList'; // <--- Ավանդներ էջ
-import DepositsInfo from './components/DepositsInfo'; // <--- Ավանդներ / Կարևոր տեղեկատվություն
+import DepositsList from './components/DepositsList';
+import DepositsInfo from './components/DepositsInfo';
+import EvocaSavingsAccount from './components/EvocaSavingsAccount'; // Հաշիվներ / Evoca խնայողական հաշիվ
+import AccountService from './components/AccountService'; // Հաշիվներ / Հաշիվների բացում և սպասարկում
+import MetalAccounts from './components/MetalAccounts'; // <--- Հաշիվներ / Առարկայազուրկ մետաղական հաշիվներ
 
 function Layout() {
   const location = useLocation();
@@ -36,10 +39,16 @@ function Layout() {
           {/* Evoca Benefits էջ */}
           <Route path="/cards/benefits" element={<EvocaBenefits />} />
 
-          {/* Ավանդներ էջ */}
+          {/* Ավանդներ էջեր */}
           <Route path="/deposits" element={<DepositsList />} />
           <Route path="/deposits/all" element={<DepositsList />} />
           <Route path="/deposits/info" element={<DepositsInfo />} />
+
+          {/* Հաշիվներ էջեր */}
+          <Route path="/accounts" element={<EvocaSavingsAccount />} />
+          <Route path="/accounts/savings" element={<EvocaSavingsAccount />} />
+          <Route path="/accounts/service" element={<AccountService />} />
+          <Route path="/accounts/metal" element={<MetalAccounts />} /> {/* <--- Նոր էջի ճանապարհը */}
         </Routes>
       </main>
 
