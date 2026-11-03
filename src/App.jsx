@@ -10,23 +10,24 @@ import AllCards from './components/AllCards';
 import CardService from './components/CardService'; 
 import SocialCards from './components/SocialCards'; 
 import EvocaBenefits from './components/EvocaBenefits';
-import EvocaSalary from './components/EvocaSalary'; // <-- Ներմուծում ենք Աշխատավարձային նախագծերի բաղադրիչը
+import EvocaSalary from './components/EvocaSalary';
 import DepositsList from './components/DepositsList';
 import DepositsInfo from './components/DepositsInfo';
-import EvocaSavingsAccount from './components/EvocaSavingsAccount'; // Հաշիվներ / Evoca խնայողական հաշիվ
-import AccountService from './components/AccountService'; // Հաշիվներ / Հաշիվների բացում և սպասարկում
-import MetalAccounts from './components/MetalAccounts'; // Հաշիվներ / Առարկայազուրկ մետաղական հաշիվներ
-import NonResidentService from './components/NonResidentService'; // Հաշիվներ / Ոչ ռեզիդենտ հաճախորդների սպասարկում
-import MoneyTransfers from './components/MoneyTransfers'; // Փոխանցումներ / Դրամական փոխանցումներ
-import PaymentSystems from './components/PaymentSystems'; // Փոխանցումներ / Վճարային համակարգեր
-import Cart from './pages/Cart'; // Զամբյուղի էջ
+import EvocaSavingsAccount from './components/EvocaSavingsAccount'; 
+import AccountService from './components/AccountService'; 
+import MetalAccounts from './components/MetalAccounts'; 
+import NonResidentService from './components/NonResidentService'; 
+import MoneyTransfers from './components/MoneyTransfers'; 
+import PaymentSystems from './components/PaymentSystems'; 
+import Cart from './pages/Cart'; 
 
-// Ներմուծում ենք Արժեթղթեր բաժնի էջերը components-ից
+// Ներմուծում ենք Արժեթղթեր և EvocaTOUCH բաժնի էջերը components-ից
 import InvestmentServices from './components/InvestmentServices'; 
 import Bonds from './components/Bonds'; 
 import HKDServices from './components/HKDServices'; 
 import RepoTransactions from './components/RepoTransactions';
 import EvocaInvest from './components/EvocaInvest'; 
+import EvocaTouch from './components/EvocaTouch'; // <-- Ներմուծում ենք EvocaTOUCH բաղադրիչը
 
 function Layout() {
   const location = useLocation();
@@ -89,6 +90,10 @@ function Layout() {
           {/* Արժեթղթեր / EvocaINVEST */}
           <Route path="/securities/evocainvest" element={<EvocaInvest />} />
           <Route path="/business/securities/evocainvest" element={<EvocaInvest />} />
+
+          {/* EvocaTOUCH */}
+          <Route path="/evoca-touch" element={<EvocaTouch />} />
+          <Route path="/business/evoca-touch" element={<EvocaTouch />} />
 
           {/* Զամբյուղի էջ */}
           <Route path="/cart" element={<Cart />} />
