@@ -10,6 +10,7 @@ import AllCards from './components/AllCards';
 import CardService from './components/CardService'; 
 import SocialCards from './components/SocialCards'; 
 import EvocaBenefits from './components/EvocaBenefits';
+import EvocaSalary from './components/EvocaSalary'; // <-- Ներմուծում ենք Աշխատավարձային նախագծերի բաղադրիչը
 import DepositsList from './components/DepositsList';
 import DepositsInfo from './components/DepositsInfo';
 import EvocaSavingsAccount from './components/EvocaSavingsAccount'; // Հաշիվներ / Evoca խնայողական հաշիվ
@@ -19,6 +20,13 @@ import NonResidentService from './components/NonResidentService'; // Հաշիվ�
 import MoneyTransfers from './components/MoneyTransfers'; // Փոխանցումներ / Դրամական փոխանցումներ
 import PaymentSystems from './components/PaymentSystems'; // Փոխանցումներ / Վճարային համակարգեր
 import Cart from './pages/Cart'; // Զամբյուղի էջ
+
+// Ներմուծում ենք Արժեթղթեր բաժնի էջերը components-ից
+import InvestmentServices from './components/InvestmentServices'; 
+import Bonds from './components/Bonds'; 
+import HKDServices from './components/HKDServices'; 
+import RepoTransactions from './components/RepoTransactions';
+import EvocaInvest from './components/EvocaInvest'; 
 
 function Layout() {
   const location = useLocation();
@@ -39,6 +47,8 @@ function Layout() {
           <Route path="/cards/all" element={<AllCards />} />
           <Route path="/cards/service" element={<CardService />} />
           <Route path="/cards/social" element={<SocialCards />} />
+          <Route path="/cards/salary" element={<EvocaSalary />} />
+          <Route path="/business/cards/salary" element={<EvocaSalary />} />
           
           {/* Evoca Benefits էջ */}
           <Route path="/cards/benefits" element={<EvocaBenefits />} />
@@ -59,6 +69,26 @@ function Layout() {
           <Route path="/transfers" element={<MoneyTransfers />} />
           <Route path="/transfers/money" element={<MoneyTransfers />} />
           <Route path="/transfers/systems" element={<PaymentSystems />} />
+
+          {/* Արժեթղթեր / Ներդրումային ծառայություններ */}
+          <Route path="/securities/investment" element={<InvestmentServices />} />
+          <Route path="/business/securities/investment" element={<InvestmentServices />} />
+
+          {/* Արժեթղթեր / Պարտատոմսեր */}
+          <Route path="/securities/bonds" element={<Bonds />} />
+          <Route path="/business/securities/bonds" element={<Bonds />} />
+
+          {/* Արժեթղթեր / ՀԿԴ ծառայություններ */}
+          <Route path="/securities/hkd" element={<HKDServices />} />
+          <Route path="/business/securities/hkd" element={<HKDServices />} />
+
+          {/* Արժեթղթեր / Ռեպո/Հակադարձ Ռեպո գործարքներ */}
+          <Route path="/securities/repo" element={<RepoTransactions />} />
+          <Route path="/business/securities/repo" element={<RepoTransactions />} />
+
+          {/* Արժեթղթեր / EvocaINVEST */}
+          <Route path="/securities/evocainvest" element={<EvocaInvest />} />
+          <Route path="/business/securities/evocainvest" element={<EvocaInvest />} />
 
           {/* Զամբյուղի էջ */}
           <Route path="/cart" element={<Cart />} />

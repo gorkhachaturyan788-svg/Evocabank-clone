@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useCartStore } from "../useCartStore"; // <-- Ճանապարհը համապատասխանեցված է src-ում գտնվող useCartStore.js-ին
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useCartStore } from "../useCartStore";
 
 const DESIGN_WIDTH = 1907;
 const MIN_DESKTOP = 1280;
@@ -66,7 +66,6 @@ const FaqIcon = () => (
   </svg>
 );
 
-/* Զամբյուղի պատկերակ */
 const CartIcon = () => (
   <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <circle cx="9" cy="21" r="1" />
@@ -119,8 +118,8 @@ export default function Header({ onBurgerClick, onSearchClick }) {
   const [activeSubTab, setActiveSubTab] = useState(0);
   const rightRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Վերցնում ենք զամբյուղի ապրանքները Zustand-ից
   const cartItems = useCartStore((state) => state.cartItems);
 
   useEffect(() => {
@@ -301,7 +300,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
       mainLinks: [
         { 
           label: "Վարկեր", 
-          path: "/loans",
+          path: "/loans/all",
           subItems: [
             { label: "Վարկեր", path: "/loans/all" },
             { label: "Վարկային պատմություն և սքոր", path: "/loans/history-score" },
@@ -310,7 +309,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
         },
         { 
           label: "Քարտեր", 
-          path: "/cards",
+          path: "/cards/all",
           subItems: [
             { label: "Քարտեր", path: "/cards/all" },
             { label: "Քարտերի տրամադրում և սպասարկում", path: "/cards/service" },
@@ -320,7 +319,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
         },
         { 
           label: "Ավանդներ", 
-          path: "/deposits",
+          path: "/deposits/all",
           subItems: [
             { label: "Ավանդներ", path: "/deposits/all" },
             { label: "Կարևոր տեղեկատվություն", path: "/deposits/info" }
@@ -328,7 +327,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
         },
         { 
           label: "Հաշիվներ", 
-          path: "/accounts",
+          path: "/accounts/savings",
           subItems: [
             { label: "Evoca խնայողական հաշիվ", path: "/accounts/savings" },
             { label: "Հաշիվների բացում և սպասարկում", path: "/accounts/service" },
@@ -338,7 +337,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
         },
         { 
           label: "Փոխանցումներ", 
-          path: "/transfers",
+          path: "/transfers/money",
           subItems: [
             { label: "Դրամական փոխանցումներ", path: "/transfers/money" },
             { label: "Վճարային համակարգեր", path: "/transfers/systems" }
@@ -346,7 +345,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
         },
         { 
           label: "Արժեթղթեր", 
-          path: "/securities",
+          path: "/securities/investment",
           subItems: [
             { label: "Ներդրումային ծառայություններ", path: "/securities/investment" },
             { label: "Պարտատոմսեր", path: "/securities/bonds" },
@@ -355,7 +354,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
             { label: "EvocaINVEST", path: "/securities/evocainvest" }
           ] 
         },
-        { label: "EvocaSALARY", path: "/evoca-salary", subItems: [] },
+        { label: "EvocaSALARY", path: "/cards/salary", subItems: [] },
         { label: "EvocaTOUCH", path: "/evoca-touch", subItems: [] },
       ],
     };
@@ -367,7 +366,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
     if (currentConfig.mainLinks.length > 0) {
       const matchedIndex = currentConfig.mainLinks.findIndex((link) =>
         link.subItems?.some((sub) => location.pathname.startsWith(sub.path)) ||
-        (link.path && location.pathname.startsWith(link.path))
+        (link.path && location.pathname === link.path)
       );
       setActiveSubTab(matchedIndex !== -1 ? matchedIndex : 0);
     } else {
@@ -436,7 +435,6 @@ export default function Header({ onBurgerClick, onSearchClick }) {
             <div className="flex items-center gap-[14px] sm:gap-[19px]">
               <Link to="/branches" aria-label="Մասնաճյուղեր" className={iconBtn}><PinIcon /></Link>
               
-              {/* --- Զամբյուղի հղումը Քարտեզի (PinIcon) և Հարցականի (FaqIcon) կողքին --- */}
               <Link to="/cart" aria-label="Զամբյուղ" className={`${iconBtn} relative`}>
                 <CartIcon />
                 {cartItems.length > 0 && (
@@ -468,7 +466,12 @@ export default function Header({ onBurgerClick, onSearchClick }) {
                   return (
                     <button
                       key={l.label}
-                      onClick={() => setActiveSubTab(index)}
+                      onClick={() => {
+                        setActiveSubTab(index);
+                        if (l.path) {
+                          navigate(l.path);
+                        }
+                      }}
                       className={`whitespace-nowrap text-[17px] transition-colors bg-transparent border-none cursor-pointer hover:text-[#6a00d1] ${
                         isSelected ? "font-bold text-[#6a00d1]" : "font-bold text-[#1d1d1f]"
                       }`}
