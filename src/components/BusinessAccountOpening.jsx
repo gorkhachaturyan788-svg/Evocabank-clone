@@ -480,15 +480,7 @@ export default function BusinessAccountOpening() {
       {/* Օնլայն և մոբայլ բանկինգի բաններ */}
       <OnlineBankingBanner />
 
-      {/* Floating Bottom Right Support Widget */}
-      <div className="fixed bottom-6 right-6 z-40 flex items-center gap-2">
-        <div className="hidden rounded-full bg-[#6a00d1] px-4 py-2 text-[14px] font-bold text-white shadow-lg sm:block">
-          Գրեք մեզ, մենք օնլայն ենք !
-        </div>
-        <button type="button" className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#a855f7] text-white shadow-lg hover:bg-[#8b5cf6] transition-colors">
-          📞
-        </button>
+      
       </div>
-    </div>
   );
 }
