@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -13,18 +13,22 @@ import EvocaBenefits from './components/EvocaBenefits';
 import EvocaSalary from './components/EvocaSalary';
 import DepositsList from './components/DepositsList';
 import DepositsInfo from './components/DepositsInfo';
+import ClassicDeposit from './components/ClassicDeposit'; 
 import EvocaSavingsAccount from './components/EvocaSavingsAccount'; 
 import AccountService from './components/AccountService'; 
-import MetalAccounts from './components/MetalAccounts'; 
 import NonResidentService from './components/NonResidentService'; 
 import MoneyTransfers from './components/MoneyTransfers'; 
 import PaymentSystems from './components/PaymentSystems'; 
 import Cart from './pages/Cart'; 
 
-// Импортируем бизнес-кредиты
-import BusinessLoans from './components/BusinessLoans'; // <-- Импорт BusinessLoans
+// Բիզնես բաժնի իմպորտներ
+import BusinessLoans from './components/BusinessLoans'; 
+import EvocaLeasing from './components/EvocaLeasing';
+import SpecialOffer from './components/SpecialOffer';
+import BusinessAccountOpening from './components/BusinessAccountOpening';
+import BusinessMetalAccounts from './components/BusinessMetalAccounts';
 
-// Импортируем остальные страницы из components
+// Մյուս էջերի իմպորտներ
 import InvestmentServices from './components/InvestmentServices'; 
 import Bonds from './components/Bonds'; 
 import HKDServices from './components/HKDServices'; 
@@ -43,43 +47,59 @@ function Layout() {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
+          
+          {/* Հիմնական բաժինների ավտոմատ վերահղում դեպի առաջին ենթաբաժին */}
+          <Route path="/business" element={<Navigate to="/business/loans" replace />} />
+          <Route path="/about" element={<Navigate to="/about/general" replace />} />
+          <Route path="/career" element={<Navigate to="/career/life" replace />} />
+
+          {/* Loans */}
           <Route path="/loans" element={<Loans />} />
           <Route path="/loans/all" element={<Loans />} />
           <Route path="/loans/history-score" element={<CreditHistoryScore />} />
           <Route path="/loans/important-info" element={<ImportantInfo />} />
 
-          {/* Роуты для Бизнес-кредитов */}
+          {/* Business Loans & Leasing */}
           <Route path="/business/loans" element={<BusinessLoans />} />
           <Route path="/business/loans/business-loans" element={<BusinessLoans />} />
+          <Route path="/business/leasing" element={<EvocaLeasing />} />
+          <Route path="/business/leasing/evoca-leasing" element={<EvocaLeasing />} />
+          <Route path="/business/leasing/special-offer" element={<SpecialOffer />} />
 
+          {/* Business Accounts */}
+          <Route path="/business/accounts/opening" element={<BusinessAccountOpening />} />
+          <Route path="/business/accounts/metal" element={<BusinessMetalAccounts />} />
+
+          {/* Cards */}
           <Route path="/cards" element={<AllCards />} />
           <Route path="/cards/all" element={<AllCards />} />
           <Route path="/cards/service" element={<CardService />} />
           <Route path="/cards/social" element={<SocialCards />} />
           <Route path="/cards/salary" element={<EvocaSalary />} />
           <Route path="/business/cards/salary" element={<EvocaSalary />} />
-          
-          {/* Evoca Benefits */}
           <Route path="/cards/benefits" element={<EvocaBenefits />} />
 
-          {/* Депозиты */}
+          {/* Deposits (ներառյալ /business/deposits/classic) */}
           <Route path="/deposits" element={<DepositsList />} />
           <Route path="/deposits/all" element={<DepositsList />} />
+          <Route path="/deposits/classic" element={<ClassicDeposit />} />
+          <Route path="/business/deposits" element={<DepositsList />} />
+          <Route path="/business/deposits/classic" element={<ClassicDeposit />} />
           <Route path="/deposits/info" element={<DepositsInfo />} />
 
-          {/* Счета */}
+          {/* Accounts */}
           <Route path="/accounts" element={<EvocaSavingsAccount />} />
           <Route path="/accounts/savings" element={<EvocaSavingsAccount />} />
           <Route path="/accounts/service" element={<AccountService />} />
-          <Route path="/accounts/metal" element={<MetalAccounts />} />
+          <Route path="/accounts/metal" element={<BusinessMetalAccounts />} />
           <Route path="/accounts/non-resident" element={<NonResidentService />} />
 
-          {/* Переводы */}
+          {/* Transfers */}
           <Route path="/transfers" element={<MoneyTransfers />} />
           <Route path="/transfers/money" element={<MoneyTransfers />} />
           <Route path="/transfers/systems" element={<PaymentSystems />} />
 
-          {/* Ценные бумаги */}
+          {/* Securities */}
           <Route path="/securities/investment" element={<InvestmentServices />} />
           <Route path="/business/securities/investment" element={<InvestmentServices />} />
           <Route path="/securities/bonds" element={<Bonds />} />
@@ -95,7 +115,7 @@ function Layout() {
           <Route path="/evoca-touch" element={<EvocaTouch />} />
           <Route path="/business/evoca-touch" element={<EvocaTouch />} />
 
-          {/* Корзина */}
+          {/* Cart */}
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </main>

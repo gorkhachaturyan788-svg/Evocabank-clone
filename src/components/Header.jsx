@@ -7,12 +7,12 @@ const MIN_DESKTOP = 1280;
 
 const TOP_LINKS = [
   { label: "Անհատ", path: "/" },
-  { label: "Բիզնես", path: "/business" },
+  { label: "Բիզնես", path: "/business/loans" },
   { label: "Ակնթարթային վճարումներ", path: "/instant-payments" },
-  { label: "Մեր մասին", path: "/about" },
+  { label: "Մեր մասին", path: "/about/general" },
   { label: "Նորություններ", path: "/news" },
   { label: "Բլոգ", path: "/blog" },
-  { label: "Կարիերա", path: "/career" },
+  { label: "Կարիերա", path: "/career/life" },
 ];
 
 const DROPDOWNS = [
@@ -155,13 +155,13 @@ export default function Header({ onBurgerClick, onSearchClick }) {
             label: "Լիզինգ", 
             path: "/business/leasing",
             subItems: [
-              { label: "Evoca Leasing", path: "/business/leasing/evoca-leasing" },
+              { label: "Evoca Leasing", path: "/business/leasing" },
               { label: "Հատուկ առաջարկ", path: "/business/leasing/special-offer" }
             ] 
           },
           { 
             label: "Հաշիվներ", 
-            path: "/business/accounts",
+            path: "/business/accounts/opening",
             subItems: [
               { label: "Հաշիվների բացում և սպասարկում", path: "/business/accounts/opening" },
               { label: "Առարկայազուրկ մետաղական հաշիվներ", path: "/business/accounts/metal" }
@@ -169,12 +169,12 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           },
           { 
             label: "Ավանդներ", 
-            path: "/business/deposits",
+            path: "/business/deposits/classic",
             subItems: [{ label: "Դասական ավանդ", path: "/business/deposits/classic" }] 
           },
           { 
             label: "Արժեթղթերի շուկա", 
-            path: "/business/securities",
+            path: "/business/securities/investment",
             subItems: [
               { label: "Ներդրումային ծառայություններ", path: "/business/securities/investment" },
               { label: "Պարտատոմսեր", path: "/business/securities/bonds" },
@@ -185,7 +185,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           },
           { 
             label: "Առևտրի ֆինանսավորում", 
-            path: "/business/trade-finance",
+            path: "/business/trade-finance/guarantee",
             subItems: [
               { label: "Երաշխիք", path: "/business/trade-finance/guarantee" },
               { label: "Ֆակտորինգային ֆինանսավորում", path: "/business/trade-finance/factoring" },
@@ -195,7 +195,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           },
           { 
             label: "Դիջիթալ", 
-            path: "/business/digital",
+            path: "/business/digital/vpos",
             subItems: [
               { label: "V-POS Տերմինալ", path: "/business/digital/vpos" },
               { label: "POS Տերմինալ", path: "/business/digital/pos" },
@@ -206,7 +206,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           },
           { 
             label: "Այլ", 
-            path: "/business/other",
+            path: "/business/other/safe-boxes",
             subItems: [
               { label: "Պահատուփեր", path: "/business/other/safe-boxes" },
               { label: "Փոխանցումներ", path: "/business/other/transfers" }
@@ -235,7 +235,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           },
           { 
             label: "Սակագներ", 
-            path: "/about/tariffs",
+            path: "/about/tariffs/individual-loans",
             subItems: [
               { label: "Վարկեր ֆիզիկական անձանց", path: "/about/tariffs/individual-loans" },
               { label: "Վարկեր իրավաբանական անձանց", path: "/about/tariffs/business-loans" },
@@ -246,7 +246,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           },
           { 
             label: "Հաշվետվություններ", 
-            path: "/about/reports",
+            path: "/about/reports/audit",
             subItems: [
               { label: "Աուդիտորական եզրակացություն", path: "/about/reports/audit" },
               { label: "Ֆինանսական հաշվետվություններ", path: "/about/reports/financial" },
@@ -269,7 +269,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
         mainLinks: [
           { 
             label: "Evoca Լայֆ", 
-            path: "/career/life",
+            path: "/career/life/culture",
             subItems: [
               { label: "Մշակույթ", path: "/career/life/culture" },
               { label: "Առավելություններ", path: "/career/life/benefits" },
@@ -279,7 +279,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
           },
           { 
             label: "Աշխատանք և պրակտիկա", 
-            path: "/career/jobs",
+            path: "/career/jobs/vacancies",
             subItems: [
               { label: "Աշխատանք Evoca-ում", path: "/career/jobs/vacancies" },
               { label: "Ուսումնական պրակտիկա", path: "/career/jobs/internship" },
