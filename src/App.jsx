@@ -1,57 +1,81 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Loans from './components/Loans';
 import CreditHistoryScore from './components/CreditHistoryScore';
 import ImportantInfo from './components/ImportantInfo';
-import AllCards from './components/AllCards'; 
-import CardService from './components/CardService'; 
-import SocialCards from './components/SocialCards'; 
+import AllCards from './components/AllCards';
+import CardService from './components/CardService';
+import SocialCards from './components/SocialCards';
 import EvocaBenefits from './components/EvocaBenefits';
 import EvocaSalary from './components/EvocaSalary';
 import DepositsList from './components/DepositsList';
 import DepositsInfo from './components/DepositsInfo';
-import ClassicDeposit from './components/ClassicDeposit'; 
-import EvocaSavingsAccount from './components/EvocaSavingsAccount'; 
-import AccountService from './components/AccountService'; 
-import NonResidentService from './components/NonResidentService'; 
-import MoneyTransfers from './components/MoneyTransfers'; 
-import PaymentSystems from './components/PaymentSystems'; 
-import Cart from './pages/Cart'; 
+import ClassicDeposit from './components/ClassicDeposit';
+import EvocaSavingsAccount from './components/EvocaSavingsAccount';
+import AccountService from './components/AccountService';
+import NonResidentService from './components/NonResidentService';
+import MoneyTransfers from './components/MoneyTransfers';
+import PaymentSystems from './components/PaymentSystems';
+import Cart from './pages/Cart';
 
 // Բիզնես բաժնի իմպորտներ
-import BusinessLoans from './components/BusinessLoans'; 
+import BusinessLoans from './components/BusinessLoans';
 import EvocaLeasing from './components/EvocaLeasing';
 import SpecialOffer from './components/SpecialOffer';
 import BusinessAccountOpening from './components/BusinessAccountOpening';
 import BusinessMetalAccounts from './components/BusinessMetalAccounts';
 
 // Մյուս էջերի իմպորտներ
-import InvestmentServices from './components/InvestmentServices'; 
-import Bonds from './components/Bonds'; 
-import HKDServices from './components/HKDServices'; 
+import InvestmentServices from './components/InvestmentServices';
+import Bonds from './components/Bonds';
+import HKDServices from './components/HKDServices';
 import RepoTransactions from './components/RepoTransactions';
-import EvocaInvest from './components/EvocaInvest'; 
-import EvocaTouch from './components/EvocaTouch'; 
+import EvocaInvest from './components/EvocaInvest';
+import EvocaTouch from './components/EvocaTouch';
+
+// Չատ և Լոգին
+import AdminChat from './components/AdminChat';
+import LoginPage from './pages/LoginPage';
 
 function Layout() {
   const location = useLocation();
-  const isBenefitsPage = location.pathname === '/cards/benefits';
+  const normalizedPath = location.pathname.replace(/\/+$/, '') || '/';
+  const hideChrome =
+    normalizedPath === '/cards/benefits' ||
+    normalizedPath === '/login';
+
+  // Մուտք գործած օգտատեր (Firebase Auth)
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => setUser(u));
+    return () => unsub();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-white font-['Noto_Sans_Armenian','Noto_Sans',Arial,sans-serif] antialiased">
-      {!isBenefitsPage && <Header />}
+      {!hideChrome && <Header />}
 
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          
+
           {/* Հիմնական բաժինների ավտոմատ վերահղում դեպի առաջին ենթաբաժին */}
           <Route path="/business" element={<Navigate to="/business/loans" replace />} />
           <Route path="/about" element={<Navigate to="/about/general" replace />} />
           <Route path="/career" element={<Navigate to="/career/life" replace />} />
+
+          {/* Login (առանց Header և Footer) */}
+          <Route path="/login" element={<LoginPage />} />
+
+          {/* Admin chat */}
+          <Route path="/admin/chat" element={<AdminChat user={user} />} />
 
           {/* Loans */}
           <Route path="/loans" element={<Loans />} />
@@ -120,7 +144,7 @@ function Layout() {
         </Routes>
       </main>
 
-      {!isBenefitsPage && <Footer />}
+      {!hideChrome && <Footer />}
     </div>
   );
 }

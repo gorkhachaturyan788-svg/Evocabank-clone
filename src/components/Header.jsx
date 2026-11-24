@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../firebase";
 import { useCartStore } from "../useCartStore";
 
 const DESIGN_WIDTH = 1907;
@@ -97,6 +99,13 @@ const BurgerIcon = () => (
   </svg>
 );
 
+const UserOfficeIcon = () => (
+  <svg className="h-[16px] w-[16px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
 const Logo = () => (
   <svg role="img" aria-label="Evocabank" viewBox="0 0 176 35" className="block h-[26px] w-[131px] xl:h-[35px] xl:w-[176px]">
     <g fill="none" stroke="#7a7d7e" strokeWidth="8">
@@ -116,11 +125,19 @@ export default function Header({ onBurgerClick, onSearchClick }) {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [scale, setScale] = useState(1);
   const [activeSubTab, setActiveSubTab] = useState(0);
+  const [user, setUser] = useState(null);
   const rightRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   const cartItems = useCartStore((state) => state.cartItems);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -141,6 +158,15 @@ export default function Header({ onBurgerClick, onSearchClick }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const getMenuConfig = () => {
     if (location.pathname.startsWith("/business")) {
@@ -406,12 +432,12 @@ export default function Header({ onBurgerClick, onSearchClick }) {
             {DROPDOWNS.map((d, i) => {
               const open = openDropdown === d.id;
               return (
-                <div key={d.id} className={`relative hidden xl:block ${i === 0 ? "mr-12" : "mr-[76px]"}`}>
+                <div key={d.id} className={`relative hidden xl:block ${i === 0 ? "mr-8" : "mr-10"}`}>
                   <button
                     type="button"
                     aria-expanded={open}
                     onClick={() => setOpenDropdown(open ? null : d.id)}
-                    className="flex cursor-pointer items-center gap-4 text-[15px] font-bold text-[#6a00d1]"
+                    className="flex cursor-pointer items-center gap-3 text-[15px] font-bold text-[#6a00d1]"
                   >
                     {d.label}
                     <Chevron open={open} />
@@ -432,9 +458,9 @@ export default function Header({ onBurgerClick, onSearchClick }) {
               );
             })}
 
-            <div className="flex items-center gap-[14px] sm:gap-[19px]">
+            <div className="flex items-center gap-[14px] sm:gap-[18px]">
               <Link to="/branches" aria-label="Մասնաճյուղեր" className={iconBtn}><PinIcon /></Link>
-              
+
               <Link to="/cart" aria-label="Զամբյուղ" className={`${iconBtn} relative`}>
                 <CartIcon />
                 {cartItems.length > 0 && (
@@ -447,7 +473,37 @@ export default function Header({ onBurgerClick, onSearchClick }) {
               <Link to="/faq" aria-label="Հաճախ տրվող հարցեր" className={iconBtn}><FaqIcon /></Link>
               <button type="button" aria-label="Լեզու" className={iconBtn}><GlobeIcon /></button>
               <button type="button" aria-label="Որոնում" onClick={onSearchClick} className={iconBtn}><SearchIcon /></button>
-              <button type="button" aria-label="Մենյու" onClick={onBurgerClick} className={`${iconBtn} ml-[7px]`}><BurgerIcon /></button>
+
+              {/* Անձնական գրասենյակ / Լոգին */}
+              {user ? (
+                <div className="hidden sm:flex items-center gap-2 ml-1">
+                  <Link
+                    to="/login"
+                    className="inline-flex items-center gap-2 rounded-full border border-[#6a00d1]/30 bg-[#f4ecfb] px-3.5 py-1.5 text-[13px] font-bold text-[#6a00d1] transition hover:bg-[#e9d8fa] max-w-[190px]"
+                    title={user.email}
+                  >
+                    <UserOfficeIcon />
+                    <span className="truncate">{user.email}</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="cursor-pointer rounded-full border border-[#e6e6e6] px-2.5 py-1.5 text-[12px] font-semibold text-[#2b3a55] transition hover:border-[#6a00d1] hover:text-[#6a00d1]"
+                  >
+                    Ելք
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#6a00d1] bg-[#f4ecfb] px-3.5 py-1.5 text-[13px] sm:text-[14px] font-bold text-[#6a00d1] transition-colors hover:bg-[#6a00d1] hover:text-white ml-1 whitespace-nowrap"
+                >
+                  <UserOfficeIcon />
+                  <span>Անձնական գրասենյակ</span>
+                </Link>
+              )}
+
+              <button type="button" aria-label="Մենյու" onClick={onBurgerClick} className={`${iconBtn} ml-[4px]`}><BurgerIcon /></button>
             </div>
           </div>
         </div>
