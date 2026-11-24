@@ -34,6 +34,35 @@ const RIGHT_BG_IMAGE =
 const PHONES_IMAGE =
   "https://www.telecomarmenia.am/myaccount/img/mobile-devices.png?v=3";
 
+function formatAuthError(err) {
+  const code = err?.code || "";
+  if (code === "auth/popup-blocked") {
+    return "Բրաուզերը արգելափակել է պատուհանը։ Թույլատրեք pop-up-ները այս կայքի համար կամ օգտագործեք էլ․ փոստ և գաղտնաբառ։";
+  }
+  if (code === "auth/popup-closed-by-user") {
+    return "Մուտքի պատուհանը փակվեց մինչև ավարտելը։";
+  }
+  if (code === "auth/email-already-in-use") {
+    return "Այս էլ․ հասցեով հաշիվ արդեն կա։ Սեղմեք «Մուտք»։";
+  }
+  if (code === "auth/weak-password") {
+    return "Գաղտնաբառը պետք է լինի առնվազն 6 նիշ։";
+  }
+  if (code === "auth/invalid-email") {
+    return "Էլ․ հասցեի ֆորմատը սխալ է։";
+  }
+  if (code === "auth/invalid-credential" || code === "auth/wrong-password") {
+    return "Էլ․ հասցեն կամ գաղտնաբառը սխալ է։";
+  }
+  if (code === "auth/operation-not-allowed") {
+    return "Firebase-ում միացրեք Email/Password կամ Google մուտքը (Authentication -> Sign-in method)։";
+  }
+  if (code === "auth/configuration-not-found") {
+    return "Firebase Authentication-ը միացված չէ նախագծում (Authentication -> Get started)։";
+  }
+  return err?.message || "Սխալ տեղի ունեցավ։";
+}
+
 export default function LoginPage() {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -58,7 +87,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      navigate("/account");
+      navigate("/");
     }
   }, [user, navigate]);
 
@@ -84,7 +113,6 @@ export default function LoginPage() {
     setError("");
     try {
       const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: "select_account" });
       const result = await signInWithPopup(auth, provider);
       const loggedUser = result.user;
 
@@ -92,29 +120,39 @@ export default function LoginPage() {
         doc(db, "users", loggedUser.uid),
         {
           uid: loggedUser.uid,
-          name: loggedUser.displayName || "Անուն չկա",
+          name: loggedUser.displayName || "Օգտատեր",
           email: loggedUser.email,
           photoURL: loggedUser.photoURL || "",
           createdAt: new Date(),
         },
         { merge: true }
       );
+      navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError(formatAuthError(err));
     } finally {
       setLoading(false);
     }
   };
 
   const handleRegister = async () => {
-    if (!email || !password || loading) return;
+    if (loading) return;
+    const cleanEmail = email.trim();
+    if (!cleanEmail || !password) {
+      setError("Լրացրեք էլ․ հասցեն և գաղտնաբառը։");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Գաղտնաբառը պետք է լինի առնվազն 6 նիշ։");
+      return;
+    }
 
     setLoading(true);
     setError("");
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        email,
+        cleanEmail,
         password
       );
       const regUser = userCredential.user;
@@ -124,13 +162,14 @@ export default function LoginPage() {
         {
           uid: regUser.uid,
           email: regUser.email,
-          name: "Անուն չկա",
+          name: regUser.email.split("@")[0] || "Օգտատեր",
           createdAt: new Date(),
         },
         { merge: true }
       );
+      navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError(formatAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -138,14 +177,20 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !password || loading) return;
+    if (loading) return;
+    const cleanEmail = email.trim();
+    if (!cleanEmail || !password) {
+      setError("Լրացրեք էլ․ հասցեն և գաղտնաբառը։");
+      return;
+    }
 
     setLoading(true);
     setError("");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, cleanEmail, password);
+      navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError(formatAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -176,14 +221,12 @@ export default function LoginPage() {
           position: "relative",
         }}
       >
-        {/* Լոգոն վերև ձախում */}
         <div style={{ alignSelf: "flex-start", width: "100%" }}>
           <Link to="/" aria-label="Evocabank" style={{ display: "inline-block" }}>
             <EvocaLogo />
           </Link>
         </div>
 
-        {/* Կենտրոնական բլոկ՝ Tabs + Form */}
         <div
           style={{
             width: "100%",
@@ -234,7 +277,6 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {/* Սպիտակ քարտը */}
           <div
             style={{
               backgroundColor: "#ffffff",
@@ -279,7 +321,6 @@ export default function LoginPage() {
                       color: "#1f2937",
                       background: "transparent",
                     }}
-                    required
                   />
                 </div>
               </div>
@@ -317,7 +358,6 @@ export default function LoginPage() {
                       color: "#1f2937",
                       background: "transparent",
                     }}
-                    required
                   />
                   <button
                     type="button"
@@ -353,6 +393,7 @@ export default function LoginPage() {
                     color: "#dc2626",
                     marginBottom: "14px",
                     fontSize: "12px",
+                    lineHeight: 1.4,
                   }}
                 >
                   {error}
@@ -460,7 +501,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Ներքևի լեզուները */}
         <div style={{ display: "flex", gap: "24px", marginTop: "20px" }}>
           <button
             type="button"

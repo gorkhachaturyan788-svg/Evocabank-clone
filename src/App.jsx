@@ -42,6 +42,7 @@ import EvocaTouch from './components/EvocaTouch';
 // Չատ և Լոգին
 import AdminChat from './components/AdminChat';
 import LoginPage from './pages/LoginPage';
+import ChatWidget from './components/ChatWidget';
 
 function Layout() {
   const location = useLocation();
@@ -143,6 +144,8 @@ function Layout() {
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </main>
+
+      <ChatWidget user={user} />
 
       {!hideChrome && <Footer />}
     </div>

@@ -4,8 +4,8 @@ import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC95tXExtZrgZ45_psCIv_Pk1nejVEckIw",
-  authDomain: "evocabank-clone.firebaseapp.com",
-  projectId: "evocabank-clone",
+  authDomain: "evocobank-clone.firebaseapp.com",
+  projectId: "evocobank-clone",
   storageBucket: "evocabank-clone.firebasestorage.app",
   messagingSenderId: "318642686868",
   appId: "1:318642686868:web:dfcb71b915996624269d81"
