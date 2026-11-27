@@ -60,6 +60,15 @@ const PinIcon = () => (
   </svg>
 );
 
+/* ՆՈՐ. քարտեզի (online map) իկոն */
+const MapIcon = () => (
+  <svg className="h-[19px] w-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z" />
+    <path d="M8 2v16" />
+    <path d="M16 6v16" />
+  </svg>
+);
+
 const FaqIcon = () => (
   <svg className="h-[17px] w-[17px]" viewBox="0 0 24 24" aria-hidden="true">
     <circle cx="12" cy="12" r="11.5" fill="currentColor" />
@@ -316,7 +325,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
       };
     }
 
-    if (["/news", "/blog", "/instant-payments"].some(p => location.pathname.startsWith(p))) {
+    if (["/news", "/blog", "/instant-payments", "/map"].some(p => location.pathname.startsWith(p))) {
       return {
         mainLinks: [],
       };
@@ -401,6 +410,7 @@ export default function Header({ onBurgerClick, onSearchClick }) {
   }, [location.pathname]);
 
   const activeMainItem = currentConfig.mainLinks[activeSubTab] || currentConfig.mainLinks[0];
+  const isMapActive = location.pathname.startsWith("/map");
 
   return (
     <header className="sticky top-0 z-50 w-full border-t border-[#cfe3e0] bg-white font-['Noto_Sans_Armenian','Noto_Sans',Arial,sans-serif] text-[#1d1d1f]">
@@ -503,7 +513,17 @@ export default function Header({ onBurgerClick, onSearchClick }) {
                 </Link>
               )}
 
-              <button type="button" aria-label="Մենյու" onClick={onBurgerClick} className={`${iconBtn} ml-[4px]`}><BurgerIcon /></button>
+              {/* ՆՈՐ. Online քարտեզ — սեղմելիս բացվում է /map էջը */}
+              <Link
+                to="/map"
+                aria-label="Online քարտեզ"
+                title="Online քարտեզ"
+                className={`${iconBtn} ml-[4px] ${isMapActive ? "!text-[#6a00d1]" : ""}`}
+              >
+                <MapIcon />
+              </Link>
+
+              <button type="button" aria-label="Մենյու" onClick={onBurgerClick} className={iconBtn}><BurgerIcon /></button>
             </div>
           </div>
         </div>

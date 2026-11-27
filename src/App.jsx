@@ -44,6 +44,9 @@ import AdminChat from './components/AdminChat';
 import LoginPage from './pages/LoginPage';
 import ChatWidget from './components/ChatWidget';
 
+// Online քարտեզ
+import MapPage from './pages/MapPage';
+
 function Layout() {
   const location = useLocation();
   const normalizedPath = location.pathname.replace(/\/+$/, '') || '/';
@@ -142,6 +145,9 @@ function Layout() {
 
           {/* Cart */}
           <Route path="/cart" element={<Cart />} />
+
+          {/* Online map */}
+          <Route path="/map" element={<MapPage />} />
         </Routes>
       </main>
 
