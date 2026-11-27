@@ -1,60 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import Loans from './components/Loans';
-import CreditHistoryScore from './components/CreditHistoryScore';
-import ImportantInfo from './components/ImportantInfo';
-import AllCards from './components/AllCards';
-import CardService from './components/CardService';
-import SocialCards from './components/SocialCards';
-import EvocaBenefits from './components/EvocaBenefits';
-import EvocaSalary from './components/EvocaSalary';
-import DepositsList from './components/DepositsList';
-import DepositsInfo from './components/DepositsInfo';
-import ClassicDeposit from './components/ClassicDeposit';
-import EvocaSavingsAccount from './components/EvocaSavingsAccount';
-import AccountService from './components/AccountService';
-import NonResidentService from './components/NonResidentService';
-import MoneyTransfers from './components/MoneyTransfers';
-import PaymentSystems from './components/PaymentSystems';
-import Cart from './pages/Cart';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Blog from "./components/Blog";
+import News from "./components/News";
+import EvocaLife from "./components/EvocaLife";
+import AboutGeneral from "./components/AboutGeneral";
+import InstantPayments from "./components/InstantPayments";
+import EvocabankPayments from "./components/EvocabankPayments";
+import InternationalOperators from "./components/InternationalOperators";
+import UtilityPayments from "./components/UtilityPayments";
+import InternetTvPayments from "./components/InternetTvPayments";
+import RoadPolicePayments from "./components/RoadPolicePayments";
+import LoanOrganizationsPayments from "./components/LoanOrganizationsPayments";
+import Loans from "./components/Loans";
+import CreditHistoryScore from "./components/CreditHistoryScore";
+import ImportantInfo from "./components/ImportantInfo";
+import AllCards from "./components/AllCards";
+import CardService from "./components/CardService";
+import SocialCards from "./components/SocialCards";
+import EvocaBenefits from "./components/EvocaBenefits";
+import EvocaSalary from "./components/EvocaSalary";
+import DepositsList from "./components/DepositsList";
+import DepositsInfo from "./components/DepositsInfo";
+import ClassicDeposit from "./components/ClassicDeposit";
+import EvocaSavingsAccount from "./components/EvocaSavingsAccount";
+import AccountService from "./components/AccountService";
+import NonResidentService from "./components/NonResidentService";
+import MoneyTransfers from "./components/MoneyTransfers";
+import PaymentSystems from "./components/PaymentSystems";
+import Cart from "./pages/Cart";
 
 // Բիզնես բաժնի իմպորտներ
-import BusinessLoans from './components/BusinessLoans';
-import EvocaLeasing from './components/EvocaLeasing';
-import SpecialOffer from './components/SpecialOffer';
-import BusinessAccountOpening from './components/BusinessAccountOpening';
-import BusinessMetalAccounts from './components/BusinessMetalAccounts';
+import BusinessLoans from "./components/BusinessLoans";
+import EvocaLeasing from "./components/EvocaLeasing";
+import SpecialOffer from "./components/SpecialOffer";
+import BusinessAccountOpening from "./components/BusinessAccountOpening";
+import BusinessMetalAccounts from "./components/BusinessMetalAccounts";
 
 // Մյուս էջերի իմպորտներ
-import InvestmentServices from './components/InvestmentServices';
-import Bonds from './components/Bonds';
-import HKDServices from './components/HKDServices';
-import RepoTransactions from './components/RepoTransactions';
-import EvocaInvest from './components/EvocaInvest';
-import EvocaTouch from './components/EvocaTouch';
+import InvestmentServices from "./components/InvestmentServices";
+import Bonds from "./components/Bonds";
+import HKDServices from "./components/HKDServices";
+import RepoTransactions from "./components/RepoTransactions";
+import EvocaInvest from "./components/EvocaInvest";
+import EvocaTouch from "./components/EvocaTouch";
 
 // Չատ և Լոգին
-import AdminChat from './components/AdminChat';
-import LoginPage from './pages/LoginPage';
-import ChatWidget from './components/ChatWidget';
+import AdminChat from "./components/AdminChat";
+import LoginPage from "./pages/LoginPage";
+import ChatWidget from "./components/ChatWidget";
 
 // Online քարտեզ
-import MapPage from './pages/MapPage';
+import MapPage from "./pages/MapPage";
 
 function Layout() {
   const location = useLocation();
-  const normalizedPath = location.pathname.replace(/\/+$/, '') || '/';
+  const normalizedPath = location.pathname.replace(/\/+$/, "") || "/";
   const hideChrome =
-    normalizedPath === '/cards/benefits' ||
-    normalizedPath === '/login';
+    normalizedPath === "/cards/benefits" ||
+    normalizedPath === "/login" ||
+    normalizedPath.startsWith("/instant-payments");
 
-  // Մուտք գործած օգտատեր (Firebase Auth)
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -63,19 +74,43 @@ function Layout() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white font-['Noto_Sans_Armenian','Noto_Sans',Arial,sans-serif] antialiased">
+    <div className="flex min-h-screen flex-col bg-white font-['Noto_Sans_Armenian','Noto_Sans',Arial,sans-serif] antialiased">
       {!hideChrome && <Header />}
 
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
 
+          {/* Բլոգ և Նորություններ */}
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/*" element={<Blog />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/news/*" element={<News />} />
+
           {/* Հիմնական բաժինների ավտոմատ վերահղում դեպի առաջին ենթաբաժին */}
           <Route path="/business" element={<Navigate to="/business/loans" replace />} />
           <Route path="/about" element={<Navigate to="/about/general" replace />} />
           <Route path="/career" element={<Navigate to="/career/life" replace />} />
 
-          {/* Login (առանց Header և Footer) */}
+          {/* Մեր մասին / Ընդհանուր տեղեկատվություն */}
+          <Route path="/about/general" element={<AboutGeneral />} />
+          <Route path="/about/*" element={<AboutGeneral />} />
+
+          {/* Կարիերա / Evoca Լայֆ */}
+          <Route path="/career/life" element={<EvocaLife />} />
+          <Route path="/career/*" element={<EvocaLife />} />
+
+          {/* Ակնթարթային վճարումներ */}
+          <Route path="/instant-payments" element={<InstantPayments />} />
+          <Route path="/instant-payments/evocabank" element={<EvocabankPayments />} />
+          <Route path="/instant-payments/international" element={<InternationalOperators />} />
+          <Route path="/instant-payments/utility" element={<UtilityPayments />} />
+          <Route path="/instant-payments/internet-tv" element={<InternetTvPayments />} />
+          <Route path="/instant-payments/road-police" element={<RoadPolicePayments />} />
+          <Route path="/instant-payments/loan-orgs" element={<LoanOrganizationsPayments />} />
+          <Route path="/instant-payments/*" element={<InstantPayments />} />
+
+          {/* Login */}
           <Route path="/login" element={<LoginPage />} />
 
           {/* Admin chat */}
@@ -107,7 +142,7 @@ function Layout() {
           <Route path="/business/cards/salary" element={<EvocaSalary />} />
           <Route path="/cards/benefits" element={<EvocaBenefits />} />
 
-          {/* Deposits (ներառյալ /business/deposits/classic) */}
+          {/* Deposits */}
           <Route path="/deposits" element={<DepositsList />} />
           <Route path="/deposits/all" element={<DepositsList />} />
           <Route path="/deposits/classic" element={<ClassicDeposit />} />
